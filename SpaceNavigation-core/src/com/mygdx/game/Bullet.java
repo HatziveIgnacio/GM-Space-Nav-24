@@ -1,49 +1,32 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.math.Rectangle;
 
 public class Bullet {
+    private Sprite spr;
+    private float xVel, yVel;
 
-	private int xSpeed;
-	private int ySpeed;
-	private boolean destroyed = false;
-	private Sprite spr;
-	    
-	    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-	    	spr = new Sprite(tx);
-	    	spr.setPosition(x, y);
-	        this.xSpeed = xSpeed;
-	        this.ySpeed = ySpeed;
-	    }
-	    public void update() {
-	        spr.setPosition(spr.getX()+xSpeed, spr.getY()+ySpeed);
-	        if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth()) {
-	            destroyed = true;
-	        }
-	        if (spr.getY() < 0 || spr.getY()+spr.getHeight() > Gdx.graphics.getHeight()) {
-	        	destroyed = true;
-	        }
-	        
-	    }
-	    
-	    public void draw(SpriteBatch batch) {
-	    	spr.draw(batch);
-	    }
-	    
-	    public boolean checkCollision(Ball2 b2) {
-	        if(spr.getBoundingRectangle().overlaps(b2.getArea())){
-	        	// Se destruyen ambos
-	            this.destroyed = true;
-	            return true;
-	
-	        }
-	        return false;
-	    }
-	    
-	    public boolean isDestroyed() {return destroyed;}
-	
+    public Bullet(float x, float y, float xVel, float yVel, Texture tx) {
+        this.xVel = xVel;
+        this.yVel = yVel;
+        spr = new Sprite(tx);
+        spr.setPosition(x, y);
+        spr.setBounds(x, y, 10, 10);
+    }
+
+    public void update() {
+        spr.translate(xVel, yVel);
+    }
+
+    public void draw(SpriteBatch batch) {
+        spr.draw(batch);
+    }
+    
+    public Rectangle getBoundingRectangle() {
+        return spr.getBoundingRectangle();
+    }
+
 }
